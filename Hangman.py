@@ -1,6 +1,6 @@
 import random
+from worldlist import words
 
-words=("apple","orange","banana","coconut","pineapple")
 
 hangman_art={0:("   ",
                 "   ",
@@ -28,13 +28,20 @@ hangman_art={0:("   ",
 # print(hangman_art[0])
 
 def display_man(wrong_guesses):
-    pass
+    print("************")
+    for line in hangman_art[wrong_guesses]:
+        print(line)
+    print("************")
+
+
 
 def display_hint(hint):
-    pass
+
+    print(" ".join(hint))
 
 def display_answer(answer):
-    pass
+    print(" ".join(answer))
+
 
 def main():
     
@@ -45,8 +52,36 @@ def main():
     is_running=True
 
     while is_running == True:
-        pass
-# continue at 6:17:19
-    print(hint)
+        display_man(wrong_guesses)
+        display_hint(hint)
+        guess=input("Enter a Letter ").lower()
+
+        if len(guess) != 1 or not guess.isalpha():
+            print("Invalid Input")
+            continue    
+        if guess in guessed_letters:
+            print(f"{guess} was already guessed")
+        guessed_letters.add(guess)
+        if guess in answer:
+            for i in range(len(answer)):
+                if answer[i]  == guess:
+                    hint[i]=guess
+        else:
+           wrong_guesses+=1 
+        
+        if "_" not in hint:
+            display_man(wrong_guesses)
+            display_answer(answer)
+            print("You win")
+            is_running=False
+        elif wrong_guesses >= len(hangman_art) - 1:
+             display_man(wrong_guesses)
+             display_answer(answer)
+             print("You lose")
+             is_running=False
+
+
+
+
 if __name__ == "__main__":
     main()
